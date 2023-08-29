@@ -29,14 +29,12 @@
       <el-icon><icon-menu /></el-icon>
       <template #title>Navigator Two</template>
     </el-menu-item>
-    <el-menu-item index="3" disabled>
-      <el-icon><document /></el-icon>
-      <template #title>Navigator Three</template>
-    </el-menu-item>
-    <el-menu-item index="4">
-      <el-icon><setting /></el-icon>
-      <template #title>Navigator Four</template>
-    </el-menu-item>
+    <router-link to="/about">
+      <el-menu-item index="3">
+        <el-icon><setting /></el-icon>
+        <template #title>Navigator Four</template>
+      </el-menu-item>
+    </router-link>
   </el-menu>
     </el-container>
 </template>
@@ -61,6 +59,7 @@
 <script setup>
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+
 import {
   Document,
   Menu as IconMenu,

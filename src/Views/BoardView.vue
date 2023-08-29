@@ -1,12 +1,16 @@
 <script>
 import { reactive } from 'vue';
+import { ref } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'; 
 import 'vue3-chessboard/style.css'
+
 
 export default{
   data: function(){
     return {
-      history:''
+	  activeName: ref('first'),
+      history:'',
+	  moves:'',
     }
   },
   components:{
@@ -16,25 +20,29 @@ export default{
     updateHistory(){
       this.history = this.boardAPI.getHistory();
     },
+	updateMoves(){
+		this.moves = this.boardAPI.getPossibleMoves();
+	},
     showThreats(){
       var moves = this.boardAPI.getPossibleMoves();
       var threats = [];
       moves.forEach((value, key, map)=>{
         var piece = this.boardAPI.getSquare(key)
         if (piece){
-          console.log(piece);
           if (piece.type == 'p'){
             if (key[0] != "a"){
               var left = this.pawnRange(key, true, piece.color);
               threats.push({orig:left, brush: 'yellow'});
-              if (this.boardAPI.getSquare(left)){ 
+              var leftpiece = this.boardAPI.getSquare(left);
+              if (leftpiece && leftpiece.color != piece.color){ 
                 threats.push({orig:key, dest: left, brush: 'red'});
               }
             }
             if (key[0] != "h"){
               var right = this.pawnRange(key, false, piece.color);
               threats.push({orig: right, brush: 'yellow'});
-              if (this.boardAPI.getSquare(right)){
+              var rightpiece = this.boardAPI.getSquare(right);
+              if (rightpiece && rightpiece.color != piece.color){
                 threats.push({orig:key, dest: right, brush: 'red'});
               }
             }
@@ -48,7 +56,6 @@ export default{
           }
         }
       });
-      console.log(threats);
       this.boardAPI.setShapes(threats);
     },
     pawnRange(key, left, color){
@@ -72,15 +79,23 @@ export default{
     <body>
       <div class="left-container">
         <div class="board-container">
-          <TheChessboard :board-config="boardConfig" @board-created="(api) => (boardAPI = api)" @move="updateHistory()"/>
+          <TheChessboard :board-config="boardConfig" @board-created="(api) => (boardAPI = api)" @move="updateHistory();updateMoves()"/>
         </div>
-        <button @click="boardAPI.undoLastMove()">Undo</button>
-        <button @click="boardAPI.toggleOrientation()">Flip Board</button>
-        <button @click="boardAPI.toggleMoves()">Possible Moves</button>
-        <button @click="showThreats()">Show Threats</button>
+		<div class="button-container">
+			<button @click="boardAPI.undoLastMove();updateHistory();updateMoves()">Undo</button>
+			<button @click="boardAPI.toggleOrientation()">Flip Board</button>
+			<button @click="showThreats()">Show Threats</button>
+		</div>
       </div>
       <div class="right-container">
-        <p>{{ history }}</p>
+		<el-tabs v-model="activeName" class="demo-tabs">
+    		<el-tab-pane label="History" name="first">
+				<p v-for="item in history">{{ item }}</p>
+			</el-tab-pane>
+    		<el-tab-pane label="Possible Moves" name="second">
+				<p v-for="(value, key, map) in moves">{{ key }} {{ value }}</p>
+			</el-tab-pane>
+  		</el-tabs>
       </div>
     </body>
   </main>
@@ -93,33 +108,33 @@ header {
 body{
   display: flex;
   align-content: space-evenly;
+  justify-content: space-evenly;
   margin: 2rem;
 }
 .container{
   width: 100%;
 }
+.button-container{
+	display: flex;
+	margin-top: 0.5rem;
+	justify-content: space-between;
+}
 .right-container{
   width: 40%;
+  
 }
 .main-wrap{
   width: 500px;  
 }
 
+.demo-tabs > .el-tabs__content {
+  padding: 32px;
+  color: #6b778c;
+  font-size: 32px;
+  font-weight: 600;
+}
+
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
 }
 </style>
