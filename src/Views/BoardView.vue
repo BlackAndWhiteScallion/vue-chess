@@ -17,13 +17,22 @@ export default{
       this.history = this.boardAPI.getPossibleMoves();
     },
     showThreats(){
-      let moves = this.boardAPI.getPossibleMoves();
-      for (var i in moves){
-        if (true){
+      var moves = this.boardAPI.getPossibleMoves();
+      moves.forEach((value, key, map)=>{
+        console.log(key, value);
+        var piece = this.boardAPI.getSquare(key)
+        if (piece){
+          if (piece == 'p'){
+            this.boardAPI.setShapes();
+          } else {
 
+          }
         }
-      }
-    }
+      });
+    },
+    pawnRange(key){
+      return [String.fromCharCode(key[0].charCodeAt(0)+1) + Integer.parseInt(key[1]) + 1, String.fromCharCode(key[0].charCodeAt(0)-1) + Integer.parseInt(key[1]) + 1]
+    },
   },
   created(){
      this.boardConfig = reactive({
@@ -31,7 +40,6 @@ export default{
       autoCastle: false,
       orientation: 'white',
     });
-
     this.boardAPI;
   }
 }
@@ -48,7 +56,7 @@ export default{
         <button @click="boardAPI.undoLastMove()">Undo</button>
         <button @click="boardAPI.toggleOrientation()">Flip Board</button>
         <button @click="boardAPI.toggleMoves()">Possible Moves</button>
-        <button @click="boardAPI.toggleMoves()">Show Threats</button>
+        <button @click="showThreats()">Show Threats</button>
       </div>
       <div>
         <p>{{ history }}</p>
