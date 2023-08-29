@@ -60,6 +60,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import {
   Document,
   Menu as IconMenu,

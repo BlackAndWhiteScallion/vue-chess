@@ -1,8 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import SideNav from '@/components/SideNav.vue'
-</script>
-
 <template>
   <div>
     <div class="nav-container">
@@ -21,5 +16,12 @@ import SideNav from '@/components/SideNav.vue'
 }
 .content{
   margin-left: 10%;
+  width: 100%;
 }
 </style>
+
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+import SideNav from '@/components/SideNav.vue'
+</script>
+
