@@ -14,24 +14,45 @@ export default{
   },
   methods:{
     updateHistory(){
-      this.history = this.boardAPI.getPossibleMoves();
+      this.history = this.boardAPI.getHistory();
     },
     showThreats(){
       var moves = this.boardAPI.getPossibleMoves();
+      var threats = [];
       moves.forEach((value, key, map)=>{
-        console.log(key, value);
         var piece = this.boardAPI.getSquare(key)
         if (piece){
-          if (piece == 'p'){
-            this.boardAPI.setShapes();
+          console.log(piece);
+          if (piece.type == 'p'){
+            if (key[0] != "a"){
+              var left = this.pawnRange(key, true, piece.color);
+              threats.push({orig:left, brush: 'yellow'});
+              if (this.boardAPI.getSquare(left)){ 
+                threats.push({orig:key, dest: left, brush: 'red'});
+              }
+            }
+            if (key[0] != "h"){
+              var right = this.pawnRange(key, false, piece.color);
+              threats.push({orig: right, brush: 'yellow'});
+              if (this.boardAPI.getSquare(right)){
+                threats.push({orig:key, dest: right, brush: 'red'});
+              }
+            }
           } else {
-
+            value.forEach((element) => {
+              threats.push({orig: element, brush: 'yellow' });
+              if (this.boardAPI.getSquare(element)){
+                threats.push({orig:key, dest: element, brush: 'red'});
+              }
+            });
           }
         }
       });
+      console.log(threats);
+      this.boardAPI.setShapes(threats);
     },
-    pawnRange(key){
-      return [String.fromCharCode(key[0].charCodeAt(0)+1) + Integer.parseInt(key[1]) + 1, String.fromCharCode(key[0].charCodeAt(0)-1) + Integer.parseInt(key[1]) + 1]
+    pawnRange(key, left, color){
+        return String.fromCharCode(key.charCodeAt(0)+ (left ? -1 : 1)) + (parseInt(key[1]) + (color == "w" ? 1 : -1));
     },
   },
   created(){
@@ -58,7 +79,7 @@ export default{
         <button @click="boardAPI.toggleMoves()">Possible Moves</button>
         <button @click="showThreats()">Show Threats</button>
       </div>
-      <div>
+      <div class="right-container">
         <p>{{ history }}</p>
       </div>
     </body>
@@ -72,18 +93,16 @@ header {
 body{
   display: flex;
   align-content: space-evenly;
+  margin: 2rem;
 }
 .container{
   width: 100%;
 }
-
-.main-wrap{
-  width: 400px;  
+.right-container{
+  width: 40%;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.main-wrap{
+  width: 500px;  
 }
 
 @media (min-width: 1024px) {

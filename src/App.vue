@@ -16,7 +16,7 @@
 }
 .content{
   margin-left: 10%;
-  width: 100%;
+  width: 90%;
 }
 </style>
 
