@@ -91,7 +91,7 @@ export default{
       <div class="right-container">
 		<el-tabs v-model="activeName" class="demo-tabs">
     		<el-tab-pane label="History" name="first">
-				<MoveTable :moveset="history"/>
+				<MoveTable :moveset="history"  @rewindHistory="(n) => boardAPI.viewHistory(n)"/>
 			</el-tab-pane>
     		<el-tab-pane label="Possible Moves" name="second">
 				<p v-for="(value, key, map) in moves">{{ key }} {{ value }}</p>
@@ -127,7 +127,6 @@ body{
 .main-wrap{
   width: 500px;  
 }
-
 .demo-tabs > .el-tabs__content {
   padding: 32px;
   color: #6b778c;

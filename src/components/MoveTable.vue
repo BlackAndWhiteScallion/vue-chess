@@ -1,5 +1,5 @@
 <template>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table :data="tableData" border style="width: 100%" @cell-click="rewind">
         <el-table-column prop="Move" label="Move" width="80"/>
         <el-table-column prop="White" label="White"  />
         <el-table-column prop="Black" label="Black" />
@@ -11,11 +11,14 @@
 </style>
 
 <script>
+import { useTransitionFallthroughEmits } from 'element-plus';
+import {defineEmits} from 'vue'
+
 export default{
     computed:{
         tableData:function(){
             if (!this.moveset) return [];
-            var moves = [];
+            var moves = []; 
             for (var i = 1; i <= this.moveset.length; i += 2){
                 moves.push({
                     Move: Math.round(i/2),
@@ -27,11 +30,14 @@ export default{
         }
     },
     props:['moveset'],
+    emits:['rewindHistory'],
     setup(props){
         console.log(props);
     },
     methods:{
-
+        rewind:function(row, column, cell){
+            this.$emit('rewindHistory', row.Move * 2 - (column.property == "White" ? 1 : 0));
+        }
     },
 }
 </script>
