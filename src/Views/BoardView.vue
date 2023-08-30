@@ -3,18 +3,19 @@ import { reactive } from 'vue';
 import { ref } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'; 
 import 'vue3-chessboard/style.css'
-
+import MoveTable from '../components/MoveTable.vue';
 
 export default{
   data: function(){
     return {
-	  activeName: ref('first'),
-      history:'',
-	  moves:'',
+	    activeName: ref('first'),
+      history:[''],
+	    moves:'',
     }
   },
   components:{
-    TheChessboard
+    TheChessboard,
+    MoveTable
   },
   methods:{
     updateHistory(){
@@ -90,7 +91,7 @@ export default{
       <div class="right-container">
 		<el-tabs v-model="activeName" class="demo-tabs">
     		<el-tab-pane label="History" name="first">
-				<p v-for="item in history">{{ item }}</p>
+				<MoveTable :moveset="history"/>
 			</el-tab-pane>
     		<el-tab-pane label="Possible Moves" name="second">
 				<p v-for="(value, key, map) in moves">{{ key }} {{ value }}</p>
