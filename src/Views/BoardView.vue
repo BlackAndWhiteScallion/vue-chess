@@ -114,9 +114,6 @@ body{
   justify-content: space-evenly;
   margin: 2rem;
 }
-.container{
-  width: 100%;
-}
 .button-container{
 	display: flex;
 	margin-top: 0.5rem;

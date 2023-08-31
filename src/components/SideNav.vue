@@ -2,8 +2,9 @@
   <el-menu
     default-active="2"
     class="el-menu-vertical-demo"
-    :collapse="isCollapse"
-    @hover="handleHover"
+    v-bind:collapse="isCollapse"
+    @mouseenter="handleHover"
+    @mouseleave="handleExit"
   >
     <el-sub-menu index="1">
       <template #title>
@@ -39,16 +40,6 @@
 </template>
 
 <style scoped>
-.collapse-enter-active,
-.collapse-leave-active {
-    transition: all 0.2s;
-}
-.collapse-enter,
-.collapse-leave-to {
-    opacity: 0;
-    transform: translateX(-100%);
-}
-
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
@@ -56,7 +47,6 @@
 </style>
 
 <script setup>
-import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
 import {
@@ -66,9 +56,14 @@ import {
   Setting,
 } from '@element-plus/icons-vue'
 
-const isCollapse = ref(true);
+var isCollapse = false;
 
 const handleHover = function(){
-  this.isCollapse=!isCollapse;
+    console.log(isCollapse);
+  isCollapse=false;
+}
+const handleExit = function(){
+  console.log(isCollapse);
+  isCollapse=true;
 }
 </script>
