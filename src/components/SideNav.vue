@@ -15,7 +15,7 @@
         <el-menu-item index="3">
           <el-icon><setting /></el-icon>
           <template #title>Navigator Four</template>
-        </el-menu-item>
+        </el-menu-item> 
       </router-link>
   </el-menu>
     </el-container>

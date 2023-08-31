@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { TheChessboard } from 'vue3-chessboard'; 
 import 'vue3-chessboard/style.css'
 import MoveTable from '../components/MoveTable.vue';
+import PossibleTable from '../components/PossibleTable.vue'
 
 export default{
   data: function(){
@@ -15,15 +16,16 @@ export default{
   },
   components:{
     TheChessboard,
-    MoveTable
+    MoveTable,
+    PossibleTable
   },
   methods:{
     updateHistory(){
       this.history = this.boardAPI.getHistory();
     },
-	updateMoves(){
-		this.moves = this.boardAPI.getPossibleMoves();
-	},
+    updateMoves(){
+      this.moves = this.boardAPI.getPossibleMoves();
+    },
     showThreats(){
       var moves = this.boardAPI.getPossibleMoves();
       var threats = [];
@@ -94,7 +96,7 @@ export default{
 				<MoveTable :moveset="history"  @rewindHistory="(n) => boardAPI.viewHistory(n)"/>
 			</el-tab-pane>
     		<el-tab-pane label="Possible Moves" name="second">
-				<p v-for="(value, key, map) in moves">{{ key }} {{ value }}</p>
+          <PossibleTable :moveset="moves"/>
 			</el-tab-pane>
   		</el-tabs>
       </div>
