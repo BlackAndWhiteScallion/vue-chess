@@ -122,7 +122,6 @@ body{
 }
 .right-container{
   width: 40%;
-  
 }
 .main-wrap{
   width: 500px;  

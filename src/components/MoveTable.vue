@@ -11,9 +11,6 @@
 </style>
 
 <script>
-import { useTransitionFallthroughEmits } from 'element-plus';
-import {defineEmits} from 'vue'
-
 export default{
     computed:{
         tableData:function(){
